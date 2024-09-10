@@ -1,0 +1,19 @@
+# STEP 4 (Finish the Pipeline)
+
+def outreach_pipeline(profile_links):
+
+    #Scrape data from the provided LinkedIn profile links
+    profile_data = scrape_linkedin_profiles(profile_links)
+    
+    #Generate personalized messages based on the scraped profile data
+    messages = generate_message(profile_data)
+    
+    #Send personalized emails to potential clients
+    #Loop through each generated message and send it to a different recipient
+    for i, message in enumerate(messages):
+        recipient_email = f'client{i}@example.com'
+        send_email("Introducing Taskformer", message, recipient_email)
+
+# Example usage
+profile_links = ['https://www.linkedin.com/in/someone/', 'https://www.linkedin.com/in/someoneelse/']
+outreach_pipeline(profile_links)
