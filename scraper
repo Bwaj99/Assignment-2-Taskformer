@@ -12,11 +12,16 @@ def scrape_linkedin_profiles(profile_links):
     for link in profile_links:
         driver.get(link)
         soup = BeautifulSoup(driver.page_source, 'html.parser')
-        
+
+# Extract the name of the person from the HTML element with class 'inline t-24 t-black t-normal break-words'
+# The .text.strip() retrieves the text content and removes any leading or trailing whitespace
+
         name = soup.find('li', class_='inline t-24 t-black t-normal break-words').text.strip()
         headline = soup.find('h2', class_='mt1 t-18 t-black t-normal break-words').text.strip()
         company = soup.find('div', class_='pv-entity__company-summary-info').text.strip()
-        
+
+# Append the extracted data (Name, Headline, Company, and LinkedIn URL) as a dictionary to the data list
+
         data.append({'Name': name, 'Headline': headline, 'Company': company, 'LinkedIn URL': link})
     
     driver.quit()
