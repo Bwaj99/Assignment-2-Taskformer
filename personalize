@@ -1,0 +1,25 @@
+# STEP 2 (Personalize messages)
+import openai
+
+# OpenAI API configuration
+openai.api_key = 'your_openai_api_key'
+
+def generate_message(profile_data):
+    messages = []
+
+    for _, profile in profile_data.iterrows():
+        prompt = f"Write a personalized cold outreach message to {profile['Name']} who works at {profile['Company']} as {profile['Headline']}. The goal is to introduce Taskformer, a business automation tool, and schedule a demo."
+
+        response = openai.Completion.create(
+            engine="text-davinci-003",
+            prompt=prompt,
+            max_tokens=150
+        )
+
+        personalized_message = response['choices'][0]['text'].strip()
+        messages.append(personalized_message)
+
+    return messages
+
+# Example usage
+messages = generate_message(profile_data)
