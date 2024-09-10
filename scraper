@@ -1,0 +1,27 @@
+# STEP 1 (LinkedIn info scraper)
+
+from selenium import webdriver
+from bs4 import BeautifulSoup
+import pandas as pd
+
+# LinkedIn Scraper (via Selenium)
+def scrape_linkedin_profiles(profile_links):
+    driver = webdriver.Chrome()
+    data = []
+
+    for link in profile_links:
+        driver.get(link)
+        soup = BeautifulSoup(driver.page_source, 'html.parser')
+        
+        name = soup.find('li', class_='inline t-24 t-black t-normal break-words').text.strip()
+        headline = soup.find('h2', class_='mt1 t-18 t-black t-normal break-words').text.strip()
+        company = soup.find('div', class_='pv-entity__company-summary-info').text.strip()
+        
+        data.append({'Name': name, 'Headline': headline, 'Company': company, 'LinkedIn URL': link})
+    
+    driver.quit()
+    return pd.DataFrame(data)
+
+# Example usage
+profile_links = ['https://www.linkedin.com/in/someone/', 'https://www.linkedin.com/in/someoneelse/']
+profile_data = scrape_linkedin_profiles(profile_links)
