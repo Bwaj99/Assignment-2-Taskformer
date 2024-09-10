@@ -10,6 +10,10 @@ def generate_message(profile_data):
     for _, profile in profile_data.iterrows():
         prompt = f"Write a personalized cold outreach message to {profile['Name']} who works at {profile['Company']} as {profile['Headline']}. The goal is to introduce Taskformer, a business automation tool, and schedule a demo."
 
+'''Make a request to OpenAI's API to generate a completion (response)
+Using the 'text-davinci-003' model to generate text based on the provided prompt
+max_tokens=150 limits the length of the generated text to 150 tokens'''
+
         response = openai.Completion.create(
             engine="text-davinci-003",
             prompt=prompt,
