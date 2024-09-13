@@ -1,29 +1,36 @@
-# STEP 2 (Personalize messages)
-import openai
+from openai import OpenAI
+from os import getenv
 
-# OpenAI API configuration
-openai.api_key = 'your_openai_api_key'
+# Initialize the OpenRouter API client using the environment variable for the API key
+client = OpenAI(
+    base_url="https://openrouter.ai/api/v1",
+    api_key=getenv("OPENROUTER_API_KEY"),
+)
 
 def generate_message(profile_data):
     messages = []
 
     for _, profile in profile_data.iterrows():
+        # Create the personalized prompt based on the profile data
         prompt = f"Write a personalized cold outreach message to {profile['Name']} who works at {profile['Company']} as {profile['Headline']}. The goal is to introduce Taskformer, a business automation tool, and schedule a demo."
 
-'''Make a request to OpenAI's API to generate a completion (response)
-Using the 'text-davinci-003' model to generate text based on the provided prompt
-max_tokens=150 limits the length of the generated text to 150 tokens'''
-
-        response = openai.Completion.create(
-            engine="text-davinci-003",
-            prompt=prompt,
-            max_tokens=150
+        # Make a request to OpenRouter's API using the LLaMA model for completion
+        response = client.chat.completions.create(
+            model="meta-llama/llama-3-8b-instruct:free",  # Using LLaMA 8B model
+            messages=[
+                {
+                    "role": "user",
+                    "content": prompt,  # Sending the personalized prompt
+                },
+            ],
         )
 
-        personalized_message = response['choices'][0]['text'].strip()
+        # Extract the generated message from the response
+        personalized_message = response.choices[0].message.content.strip()
         messages.append(personalized_message)
 
     return messages
 
 # Example usage
-messages = generate_message(profile_data)
+# Assuming profile_data is a pandas DataFrame containing LinkedIn profiles
+# messages = generate_message(profile_data)
