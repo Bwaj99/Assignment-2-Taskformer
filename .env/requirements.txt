@@ -1,0 +1,21 @@
+# Makefile for LinkedIn Scraper & Automated Cold Outreach System
+
+# Notes:
+# 1. gspread: For interacting with Google Sheets.
+# 2. oauth2client: For Google Sheets API authentication.
+# 3. selenium: For web scraping and interacting with LinkedIn.
+# 4. openai: For generating personalized outreach messages.
+# 5. smtplib: Used for sending emails (part of Python's standard library).
+# 6. email-validator: Added for validating email formats before sending.
+
+# Install required dependencies
+install:
+	pip install -r requirements.txt
+
+# Run the LinkedIn scraper script
+run:
+	python linkedin_outreach.py
+
+# Clean environment (if necessary)
+clean:
+	rm -rf __pycache__
